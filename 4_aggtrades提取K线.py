@@ -141,6 +141,7 @@ for symbol in all_markets:
         print(f'{symbol} 重命名为 {overrides.get(symbol)}')
         symbol = overrides.get(symbol)
 
+    symbol = symbol.replace('-SWAP', '')
     file_path = target_dir / f'{symbol}.csv'
     if file_path.exists():
         file_path.unlink()
