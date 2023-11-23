@@ -1,0 +1,48 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "1_API获取分钟K线",
+            "type": "python",
+            "request": "launch",
+            "program": "1_获取okex分钟K线.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "2_爬取下线合约的aggtrades",
+            "type": "python",
+            "request": "launch",
+            "program": "2_爬取okex交易记录.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "3_日分钟K线合成币对K线",
+            "type": "python",
+            "request": "launch",
+            "program": "3_分钟K线合成币对K线.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "4_aggtrades合成币对K线",
+            "type": "python",
+            "request": "launch",
+            "program": "4_aggtrades提取K线.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        }
+    ]
+}
