@@ -19,6 +19,16 @@ if not data_path.exists():
 
 def fetch_offline_swap_aggtrades(active_ids):
 
+    overrides = {
+        # LUNA 20220513下线，20220528重新上线，需要下载重新上线前的历史数据
+        'LUNA-USDT-SWAP': datetime.strptime('20220527', '%Y%m%d'),
+    }
+
+    # LUNA-USDT-SWAP需要下载重新上线前的历史数据
+    for symbol in overrides.keys():
+        if symbol in active_ids:
+            active_ids.remove(symbol)
+
     base_url = "https://www.okx.com/priapi/v5/broker/public/v2/orderRecord"
     file_download_url = "https://static.okx.com/cdn/okex/traderecords/aggtrades/daily"
 
@@ -30,12 +40,12 @@ def fetch_offline_swap_aggtrades(active_ids):
     for date_struct in dates:
 
         date = date_struct["fileName"]
+        given_date = datetime.strptime(date, '%Y%m%d')
 
         # 选择只跑某个日期之前的文件
-        given_date = datetime.strptime(date, '%Y%m%d')
-        comparison_date = datetime.strptime('20211015', '%Y%m%d')
-        if given_date >= comparison_date:
-            continue
+        # comparison_date = datetime.strptime('20211015', '%Y%m%d')
+        # if given_date >= comparison_date:
+        #     continue
 
         print(f'开始处理日期: {date}')
         # date_folder_url = f"{file_download_url}/{date}"
@@ -56,6 +66,15 @@ def fetch_offline_swap_aggtrades(active_ids):
             # 检查是否是active symbol
             if file_name.split('-aggtrades-')[0] in active_ids:
                 continue
+
+            # LUNA-USDT-SWAP需要下载重新上线前的历史数据
+            if file_name.split('-aggtrades-')[0] in overrides.keys():
+                override_date = overrides.get(file_name.split('-aggtrades-')[0])
+                if given_date >= override_date:
+                    continue
+
+            # if file_name.split('-aggtrades-')[0] not in ['LUNA-USDT-SWAP']:
+            #     continue
 
             file_url = f"{file_download_url}/{date}/{file_name}"
             # 构造本地保存路径
@@ -119,5 +138,4 @@ if __name__ == '__main__':
 
     usdt_swap_id = [ok_exchange.market_id(symbol) for symbol in usdt_swap]
     # print(f'U本位合约: {usdt_swap_id}')
-
     fetch_offline_swap_aggtrades(usdt_swap_id)

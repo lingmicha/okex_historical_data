@@ -8,7 +8,11 @@ from datetime import datetime, timedelta
 # 3. 利用pandas的重采样功能，resample成1分钟的K线
 # 4. 保存到`币对分类K线`目录中
 
-target_dir = Path(__file__).parent / 'data' / '币对分类K线'
+overrides = {
+    'LUNA-USDT-SWAP': 'LUNA1-USDT-SWAP',
+}
+
+target_dir = Path(__file__).parent / 'data' / '币对分类K线_合成'
 aggtrades_dir = Path(__file__).parent / 'data' / 'aggtrades'
 # print(f'aggtrades目录: {aggtrades_dir}')
 
@@ -27,7 +31,8 @@ for file in aggtrades_dir.iterdir():
 
 # done = set(['ANC-USDT-SWAP', 'ASTR-USDT-SWAP', 'BABYDOGE-USDT-SWAP', 'BTM-USDT-SWAP', 'BTT-USDT-SWAP', 'BZZ-USDT-SWAP', 'CONV-USDT-SWAP', 'CQT-USDT-SWAP', 'DOME-USDT-SWAP', 'DORA-USDT-SWAP', 'EFI-USDT-SWAP'])
 # all_markets = all_markets.difference(done)
-all_markets = sorted(all_markets)
+all_markets = sorted(list(all_markets))
+# all_markets = ['LUNA-USDT-SWAP']
 print(f'共有{len(all_markets)}个交易对')
 print(all_markets)
 
@@ -60,7 +65,24 @@ for symbol in all_markets:
         print(f'{symbol} 缺失日期: {non_continuous_dates}')
         # exit(1)
 
-    aggtrades_list = [pd.read_csv(file, compression='zip', encoding='gbk') for file in matching_files]
+    # 将matching_files中的文件区分是否是20220101之前的
+    # 20220101之前的文件没有header，之后的文件有header
+    # 之前的文件需要手动加上header
+    aggtrades_list = []
+    columns = ['trade_id/撮合id','side/交易方向','size/数量','price/价格','created_time/成交时间']
+
+    for file in matching_files:
+        date_str = (file.split('/')[-1]).split('_')[0]
+        date = datetime.strptime(date_str, '%Y%m%d')
+        if date < datetime(2022, 1, 1):
+            aggtrades = pd.read_csv(file, compression='zip', encoding='gbk', header=None)
+            aggtrades.columns = columns
+            aggtrades_list.append(aggtrades)
+        else:
+            aggtrades = pd.read_csv(file, compression='zip', encoding='gbk')
+            assert aggtrades.columns.tolist() == columns, f'{symbol} {file} 列名不匹配'
+            aggtrades_list.append(aggtrades)
+
     aggtrades = pd.concat(aggtrades_list, axis=0)
     # print(aggtrades)
 
@@ -96,10 +118,28 @@ for symbol in all_markets:
     kline['taker_buy_base_asset_volume'] = 1
     kline['taker_buy_quote_asset_volume'] = 1
 
-    # 4. 保存到`币对分类K线`目录中
+    # 检查是否有缺失的K线
+    # 获取第1分钟和最后一分钟的时间戳
     kline = kline.reset_index()
+    start_time = kline['candle_begin_time'].min()
+    end_time = kline['candle_begin_time'].max()
+
+    # 生成完整的时间范围
+    full_time_range = pd.date_range(start=start_time, end=end_time, freq='T')
+    # 找到缺失的时间戳
+    missing_timestamps = set(full_time_range) - set(kline['candle_begin_time'])
+
+    if missing_timestamps:
+        print(f"{symbol} 存在缺失的时间戳:", missing_timestamps)
+        exit(1)
+
+    # 4. 保存到`币对分类K线`目录中
     header = ['candle_begin_time', 'open', 'high', 'low', 'close', 'volume', 'quote_volume', 'trade_num', 'taker_buy_base_asset_volume', 'taker_buy_quote_asset_volume']
     kline = kline[header]
+
+    if symbol in overrides.keys():
+        print(f'{symbol} 重命名为 {overrides.get(symbol)}')
+        symbol = overrides.get(symbol)
 
     file_path = target_dir / f'{symbol}.csv'
     if file_path.exists():
