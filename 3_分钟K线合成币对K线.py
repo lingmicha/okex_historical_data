@@ -23,6 +23,7 @@ for date_dir in kline_dir.iterdir():
             symbol = file.stem.split('.')[0] # 去除日期
             all_markets.add(symbol)
 
+all_markets = sorted(list(all_markets))
 print(f'共有{len(all_markets)}个交易对')
 # print(all_markets)
 
@@ -47,7 +48,10 @@ for symbol in all_markets:
     # 3. 读取这个币对从最早到最近日期的所有kline文件，合并成一个文件
     kline_list = [pd.read_csv(file) for file in kline_paths]
     kline = pd.concat(kline_list, axis=0)
+
+    # 此处只需要返回一个naive的datetime，不需要指明utc时区,写出的时候datetime也不指定时区
     kline['candle_begin_time'] = pd.to_datetime(kline['candle_begin_time'], unit='ms')
+    
     kline.sort_values(by=['candle_begin_time'], inplace=True, ascending=True)
     print(f'{symbol} 共有{kline.shape[0]}条K线')
     # df.drop_duplicates(inplace=True)
@@ -77,4 +81,6 @@ for symbol in all_markets:
     if file_path.exists():
         file_path.unlink()
     kline.to_csv(target_dir / f'{symbol}.csv', index=False)
-    exit(0)
+
+print('完成')
+exit(0)
