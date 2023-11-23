@@ -2,7 +2,7 @@
     "apps": [
         {
             "name": "fetch_okex_kline",
-            "script": "/Users/lingmic/Project/okex_historical_data/获取okex分钟K线.py",
+            "script": "/Users/lingmic/Project/okex_historical_data/1_获取okex分钟K线.py",
             "exec_interpreter": "/opt/homebrew/Caskroom/miniconda/base/envs/alpha/bin/python",
             "merge_logs": false,
             "watch": false,
