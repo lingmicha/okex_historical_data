@@ -146,6 +146,7 @@ if __name__ == '__main__':
             df['trade_num'] = 1
             df['taker_buy_base_asset_volume'] = 1
             df['taker_buy_quote_asset_volume'] = 1
+            df['candle_begin_time'] = pd.to_datetime(df['candle_begin_time'], unit = 'ms')
             df.to_csv(date_dir / f'{normal_symbol}.csv', index=False)
 
             # with open(date_dir / f'{normal_symbol}.csv', 'w') as f:

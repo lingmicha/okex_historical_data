@@ -110,8 +110,8 @@ if __name__ == '__main__':
     end_date = fetch_date
 
     # 定义起始日期和结束日期
-    # start_date = datetime(2023, 11, 21, tzinfo=pytz.utc)
-    # end_date = datetime(2023, 11, 21, tzinfo=pytz.utc)
+    # start_date = datetime(2022, 12, 18, tzinfo=pytz.utc)
+    # end_date = datetime(2022, 12, 18, tzinfo=pytz.utc)
 
     # 生成日期列表
     dates_to_process = [start_date + timedelta(days=x) for x in range((end_date - start_date).days + 1)]
@@ -146,6 +146,7 @@ if __name__ == '__main__':
             df['trade_num'] = 1
             df['taker_buy_base_asset_volume'] = 1
             df['taker_buy_quote_asset_volume'] = 1
+            df['candle_begin_time'] = pd.to_datetime(df['candle_begin_time'], unit = 'ms')
             df.to_csv(date_dir / f'{normal_symbol}.csv', index=False)
 
             # with open(date_dir / f'{normal_symbol}.csv', 'w') as f:
