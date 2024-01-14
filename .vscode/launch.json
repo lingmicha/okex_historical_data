@@ -37,10 +37,18 @@
             "justMyCode": true
         },
         {
-            "name": "4_aggtrades合成币对K线",
+            "name": "4_交易记录提取分钟K线",
             "type": "python",
             "request": "launch",
-            "program": "4_aggtrades提取K线.py",
+            "program": "4_交易记录提取分钟K线.py",
+            "console": "integratedTerminal",
+            "justMyCode": true
+        },
+        {
+            "name": "5_检查K线完整性",
+            "type": "python",
+            "request": "launch",
+            "program": "5_检查K线完整性.py",
             "console": "integratedTerminal",
             "justMyCode": true
         }
