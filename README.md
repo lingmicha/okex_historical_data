@@ -78,7 +78,7 @@ ZEN-USDT-SWAP     2023 年 12 月 19 日 16:00 (HKT)
 
 ```
 WAVES-USDT-SWAP  2024 年 2 月 1 日 16:00 (HKT)
-YFII-USDT-SWAP  2024 年 2 月 7 日 16:00 (HKT)
+YFII-USDT-SWAP  2024 年 2 月 7 日 16:00 (HKT) (缺失了UTC2月6日的数据，Job没有正常运行)
 WSM-USDT-SWAP  2024 年 2 月 22 日 16:00 (HKT)
 ```
 
