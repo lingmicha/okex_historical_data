@@ -80,6 +80,7 @@ ZEN-USDT-SWAP     2023 年 12 月 19 日 16:00 (HKT)
 WAVES-USDT-SWAP  2024 年 2 月 1 日 16:00 (HKT)
 YFII-USDT-SWAP  2024 年 2 月 7 日 16:00 (HKT) (缺失了UTC2月6日的数据，Job没有正常运行)
 WSM-USDT-SWAP  2024 年 2 月 22 日 16:00 (HKT)
+GF-USDT-SWAP  2024 年 4 月 22 日 16:00 (HKT)
 ```
 
 
@@ -90,3 +91,6 @@ LON-USDT-SWAP 缺失日期: [datetime.datetime(2022, 6, 29, 0, 0)]
 WNXM-USDT-SWAP 缺失日期: [datetime.datetime(2022, 6, 29, 0, 0)]
 BTT-USDT-SWAP 缺失日期: [datetime.datetime(2021, 12, 30, 0, 0)]
 ```
+
+### 同SYMBOL合约
+ENJ-USDT-SWAP 有两个合约，一个是2023年8月24日下线的，一个是2024年3月1日上线的，需要区分开来，旧的重命名成ENJ1
