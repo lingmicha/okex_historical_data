@@ -81,6 +81,8 @@ WAVES-USDT-SWAP  2024 年 2 月 1 日 16:00 (HKT)
 YFII-USDT-SWAP  2024 年 2 月 7 日 16:00 (HKT) (缺失了UTC2月6日的数据，Job没有正常运行)
 WSM-USDT-SWAP  2024 年 2 月 22 日 16:00 (HKT)
 GF-USDT-SWAP  2024 年 4 月 22 日 16:00 (HKT)
+STARLUSDT	2024 年 5 月 23 日下午 4:00 ~ 5:00 (HKT)
+ANTUSDT	2024 年 5 月 23 日下午 4:00 ~ 5:00 (HKT)
 ```
 
 
